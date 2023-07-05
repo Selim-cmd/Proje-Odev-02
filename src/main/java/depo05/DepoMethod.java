@@ -7,9 +7,11 @@ public class DepoMethod extends Depo {
     int id = getId();
     private HashMap<Integer, Depo> urunListesi = new HashMap<>();
     Scanner input = new Scanner(System.in);
-    public DepoMethod(String urunAdi, String uretici, String birim) {
-        super(urunAdi, uretici, birim);
+
+    public DepoMethod(String urunAdi, String uretici, String birim, int miktar, String raf) {
+        super(urunAdi, uretici, birim, miktar, raf);
     }
+
     public void giris() {
         System.out.print("\nDepo Uygulama Programı\n" +
                 "----------------------\n" +
@@ -50,6 +52,7 @@ public class DepoMethod extends Depo {
                 break;
         }
     }
+
     public void urunTanimla() {
         id++;
         System.out.print("Ürünün Adını giriniz: ");
@@ -58,9 +61,10 @@ public class DepoMethod extends Depo {
         String uretici = (input.next());
         System.out.print("Birimi giriniz: ");
         String birimi = (input.next());
-        Depo urun = new Depo(urunAdi, uretici, birimi);
-        urunListesi.put(id, urun);
+        Depo urunTanimla = new Depo(urunAdi, uretici, birimi);
+        urunListesi.put(id, urunTanimla);
     }
+
     public void urunListele() {
         System.out.printf("\n%7s %12s %12s %12s %12s %12s\n", "id", "Ürün Adı", "Üretici", "Miktar", "Birim", "Raf");
         System.out.println("------------------------------------------------------------------------------");
@@ -69,15 +73,24 @@ public class DepoMethod extends Depo {
             System.out.printf("%7d %12s %12s %12d %12s %12s\n", i, liste.getUrunAdi(), liste.getUretici(), liste.getMiktar(), liste.getBirim(), liste.getRaf());
         }
     }
+
     public void urunGirisi() {
         urunListele();
         System.out.print("Ürün Girişi ===>  Id :");
-        Depo liste = urunListesi.get(input.nextInt());
+        int idx = input.nextInt();
+        Depo liste = urunListesi.get(idx);
         System.out.print("Miktarını girin : ");
         int miktar = Math.abs(input.nextInt());
-        liste.setMiktar(miktar);
+        String raf = liste.getRaf();
+        if (liste.getRaf().equals("-")) {
+            System.out.print("Rafı girin : ");
+            raf = input.next();
+        }
+        Depo urunGiris = new Depo(liste.getUrunAdi(), liste.getUretici(), liste.getBirim(), (liste.getMiktar() + miktar), raf);
+        urunListesi.put(idx, urunGiris);
         urunListele();
     }
+
     public void urunRafakoy() {
         urunListele();
         System.out.print("Ürünü Rafa Koy ===>  Id :");
@@ -87,14 +100,15 @@ public class DepoMethod extends Depo {
         liste.setRaf(raf);
         urunListele();
     }
+
     public void urunCikisi() {
         urunListele();
         System.out.print("Ürün Çıkışı ===>  Id :");
         Depo liste = urunListesi.get(input.nextInt());
         System.out.print("Miktarı girin : ");
         int miktar = Math.abs(input.nextInt());
-        liste.setMiktar(-miktar);
-        System.out.println("(Kalan "+liste.getMiktar()+" "+liste.getBirim()+" "+liste.getUrunAdi()+")");
+        liste.setMiktar(miktar);
+        System.out.println("(Kalan " + liste.getMiktar() + " " + liste.getBirim() + " " + liste.getUrunAdi() + ")");
         urunListele();
     }
 }
