@@ -1,7 +1,7 @@
 package depo05;
 
 public class Depo {
-    private int id;
+    private int id=999;
     private String urunAdi;
     private String uretici;
     private String birim;

@@ -21,7 +21,7 @@ public class DepoMethod extends Depo {
                 "4) Ürünü Rafa Koy\n" +
                 "5) Ürün Çıkışı\n" +
                 "6) Çıkış\n" +
-                "Yapmak istediğiniz işlemi tuşlayınız: ");
+                "1'den 6'ya kadar olan seçeneklerden birini seçiniz: ");
         int secim = input.nextInt();
         switch (secim) {
             case 1:
@@ -45,6 +45,7 @@ public class DepoMethod extends Depo {
                 giris();
                 break;
             case 6:
+                System.out.println("\nProgramdan çıkış yapılıyor.");
                 break;
             default:
                 System.out.println("Hatalı Giriş. Tekrar Deneyiniz");
@@ -66,18 +67,31 @@ public class DepoMethod extends Depo {
     }
 
     public void urunListele() {
+        if (urunListesi.isEmpty()){
+            System.out.println("\nDepoda ürün bulunmamaktadır.");
+            return;
+        }
         System.out.printf("\n%7s %12s %12s %12s %12s %12s\n", "id", "Ürün Adı", "Üretici", "Miktar", "Birim", "Raf");
         System.out.println("------------------------------------------------------------------------------");
         for (int i = 1; i <= urunListesi.size(); i++) {
-            Depo liste = urunListesi.get(i);
-            System.out.printf("%7d %12s %12s %12d %12s %12s\n", i, liste.getUrunAdi(), liste.getUretici(), liste.getMiktar(), liste.getBirim(), liste.getRaf());
+            Depo liste = urunListesi.get(999+i);
+            System.out.printf("%7d %12s %12s %12d %12s %12s\n", 999+i, liste.getUrunAdi(), liste.getUretici(), liste.getMiktar(), liste.getBirim(), liste.getRaf());
         }
     }
 
     public void urunGirisi() {
+        if (urunListesi.isEmpty()){
+            System.out.println("\nÜrün girişi yapabilmek için önce ürün tanımlanmalıdır!.");
+            return;
+        }
         urunListele();
         System.out.print("Ürün Girişi ===>  Id :");
         int idx = input.nextInt();
+        if (!urunListesi.containsKey(idx)){
+            System.out.println("\nGirdiğiniz ID hatalı, geçerli bir ID giriniz.");
+            urunGirisi();
+            return;
+        }
         Depo liste = urunListesi.get(idx);
         System.out.print("Miktarını girin : ");
         int miktar = Math.abs(input.nextInt());
@@ -92,9 +106,19 @@ public class DepoMethod extends Depo {
     }
 
     public void urunRafakoy() {
+        if (urunListesi.isEmpty()){
+            System.out.println("\nÜrün rafa koyabilmek için ürün girişi yapılmış olmalıdır!.");
+            return;
+        }
         urunListele();
         System.out.print("Ürünü Rafa Koy ===>  Id :");
-        Depo liste = urunListesi.get(input.nextInt());
+        int idx = input.nextInt();
+        if (!urunListesi.containsKey(idx)){
+            System.out.println("\nGirdiğiniz ID hatalı, geçerli bir ID giriniz.");
+            urunRafakoy();
+            return;
+        }
+        Depo liste = urunListesi.get(idx);
         System.out.print("Rafı girin : ");
         String raf = input.next();
         liste.setRaf(raf);
@@ -102,9 +126,19 @@ public class DepoMethod extends Depo {
     }
 
     public void urunCikisi() {
+        if (urunListesi.isEmpty()){
+            System.out.println("\nÜrün çıkışı yapabilmek depoda ürün bulunmalıdır!.");
+            return;
+        }
         urunListele();
         System.out.print("Ürün Çıkışı ===>  Id :");
-        Depo liste = urunListesi.get(input.nextInt());
+        int idx = input.nextInt();
+        if (!urunListesi.containsKey(idx)){
+            System.out.println("\nGirdiğiniz ID hatalı, geçerli bir ID giriniz.");
+            urunRafakoy();
+            return;
+        }
+        Depo liste = urunListesi.get(idx);
         System.out.print("Miktarı girin : ");
         int miktar = Math.abs(input.nextInt());
         liste.setMiktar(miktar);
