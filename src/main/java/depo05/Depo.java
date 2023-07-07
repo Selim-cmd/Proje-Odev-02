@@ -1,12 +1,12 @@
 package depo05;
 
 public class Depo {
-    private int id=999;
+    private int id = 999;
     private String urunAdi;
     private String uretici;
     private String birim;
     private int miktar;
-    private String raf = "-";
+    private String raf = "null";
 
     public Depo(String urunAdi, String uretici, String birim) {
         this.urunAdi = urunAdi;
@@ -39,11 +39,7 @@ public class Depo {
     }
 
     public void setMiktar(int miktar) {
-        if (miktar > this.miktar) {
-            System.out.println("Yeterli Ürün Yok!");
-        }else{
-            this.miktar -= miktar;
-        }
+        this.miktar = miktar;
 
     }
 
